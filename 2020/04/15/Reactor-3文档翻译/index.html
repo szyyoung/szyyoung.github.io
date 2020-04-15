@@ -7,15 +7,15 @@
   
   <title>Reactor 3文档翻译 | Young</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: &gt;反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作">
+  <meta name="description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响应式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Reactor 3文档翻译">
 <meta property="og:url" content="http://yoursite.com/2020/04/15/Reactor-3%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/index.html">
 <meta property="og:site_name" content="Young">
-<meta property="og:description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: &gt;反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作">
+<meta property="og:description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响应式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-15T08:47:07.000Z">
-<meta property="article:modified_time" content="2020-04-15T09:20:40.804Z">
+<meta property="article:modified_time" content="2020-04-15T09:24:12.555Z">
 <meta property="article:author" content="young">
 <meta name="twitter:card" content="summary">
   
@@ -89,7 +89,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="反应式编程简介"><a href="#反应式编程简介" class="headerlink" title="反应式编程简介"></a>反应式编程简介</h3><p>Reactor是Reactive Programming范式的实现，可以总结如下:</p>
-<pre><code>&gt;反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https://en.wikipedia.org/wiki/Reactive_programming)</code></pre><p>作为响应式编程方向上的第一步，Microsoft在.NET生态系统中创建了响应式扩展（Rx）库。然后RxJava在JVM上实现了反应式编程。随着时间的流逝，通过Reactive Streams的努力出现了Java的规范，该规范定义了JVM上的响应库的一组接口和交互规则。它的接口已在Flow类下集成到Java 9中。</p>
+<pre><code>反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https://en.wikipedia.org/wiki/Reactive_programming)</code></pre><p>作为响应式编程方向上的第一步，Microsoft在.NET生态系统中创建了响应式扩展（Rx）库。然后RxJava在JVM上实现了反应式编程。随着时间的流逝，通过Reactive Streams的努力出现了Java的规范，该规范定义了JVM上的响应库的一组接口和交互规则。它的接口已在Flow类下集成到Java 9中。</p>
 <p>反应式编程范例通常以面向对象的语言表示，作为Observer设计模式的扩展。 您还可以将主要的反应流模式与熟悉的Iterator设计模式进行比较，因为所有这些库中的Iterable-Iterator对都有双重性。一个主要的区别是，虽然Iterator是基于pull的，但是反应流却是基于push的。</p>
 <p>使用迭代器是命令式编程模式，即使访问值的方法仅由Iterable负责。 确实，开发人员可以选择何时访问序列中的next（）项。在反应式流中，上述对等效于Publisher-Subscriber。 但是是发布者在新可用值出现时通知订阅者，而此推送方面是做出反应的关键。同样，应用于推入值的操作以声明方式而不是命令方式表示：程序员表示计算的逻辑，而不是描述其确切的控制流程。</p>
 <p>除了推送值之外，还以明确定义的方式涵盖了错误处理和完成方面。 发布者可以将新值推送到其订阅者（通过调用onNext），但也可以发出错误信号（通过调用onError）或完成（通过调用onComplete）。 错误和完成都会终止序列。 可以总结如下：</p>
@@ -161,7 +161,7 @@
 <h5 id="The-Assembly-Line-Analogy-流水线类比"><a href="#The-Assembly-Line-Analogy-流水线类比" class="headerlink" title="The Assembly Line Analogy 流水线类比"></a>The Assembly Line Analogy 流水线类比</h5><p> You can think of data processed by a reactive application as moving through an assembly line. Reactor is both the conveyor belt and the workstations. The raw material pours from a source (the original Publisher) and ends up as a finished product ready to be pushed to the consumer (or Subscriber).<br> 您可以将反应式应用程序处理的数据视为流水线。 Reactor既是传送带又是工作站。原材料从来源（原始发布者）倾泻而出，最终成为准备好推向消费者（或订阅者）的成品。<br>The raw material can go through various transformations and other intermediary steps or be part of a larger assembly line that aggregates intermediate pieces together. If there is a glitch or clogging at one point (perhaps boxing the products takes a disproportionately long time), the afflicted workstation can signal upstream to limit the flow of raw material.<br>原材料可以经过各种转换和其他中间步骤，也可以成为将中间件聚集在一起的较大装配线的一部分。如果某一点出现故障或堵塞（也许装箱产品花费的时间过长），那么受灾的工作站可以向上游发出信号，以限制原材料的流动。</p>
 <h5 id="Operators-运算符"><a href="#Operators-运算符" class="headerlink" title="Operators 运算符"></a>Operators 运算符</h5><p>In Reactor, operators are the workstations in our assembly analogy. Each operator adds behavior to a Publisher and wraps the previous step’s Publisher into a new instance. The whole chain is thus linked, such that data originates from the first Publisher and moves down the chain, transformed by each link.<br>Eventually, a Subscriber finishes the process. Remember that nothing happens until a Subscriber subscribes to a Publisher,as we see shortly.</p>
 <p> 在Reactor中，operators是我们装配类比中的工作站。每个operators都会向Publisher添加行为，并将上一步的发布服务器包装到新实例中。 因此，整个链被链接在一起，这样数据就从第一个Publisher发出并在链中向下移动，并由每个链接转换。 最终，订阅者完成了该过程。请记住，在订阅者订阅发布者之前，什么也不会发生，正如我们不久将看到的那样。</p>
-<pre><code>&gt;Understanding that operators create new instances can help you avoid a common mistake that would lead you to believe that an operator you used in your chain is not being applied. See this item in the FAQ.
+<pre><code>Understanding that operators create new instances can help you avoid a common mistake that would lead you to believe that an operator you used in your chain is not being applied. See this item in the FAQ.
 了解operators会创建新的实例可以帮助您避免一个常见错误，该错误会导致您认为未应用您在链中使用的运算符。 请参阅常见问题解答中的此项。</code></pre><p>While the Reactive Streams specification does not specify operators at all,one of the best added values of reactive libraries,such as Reactor, is the rich vocabulary of operators that they provide.These cover a lot of ground, from simple transformation and filtering to complex orchestration and error handling.<br>虽然反应式流规范根本没有指定运算符，但是反应式库的最佳附加值之一（例如Reactor）是它们提供的运算符的丰富词汇表。 从简单的转换和过滤到复杂的编排和错误处理，这些内容涉及很多领域。</p>
 <h5 id="Nothing-Happens-Until-You-subscribe"><a href="#Nothing-Happens-Until-You-subscribe" class="headerlink" title="Nothing Happens Until You subscribe()"></a>Nothing Happens Until You subscribe()</h5><p>In Reactor, when you write a Publisher chain, data does not start pumping into it by default. Instead, you create an abstract description of your asynchronous process (which can help with reusability and composition).<br>在Reactor中，当您编写发布者链时，默认情况下不会开始将数据泵入其中。相反，您可以创建异步过程的抽象描述（这有助于重用和组合）。</p>
 <p>By the act of subscribing, you tie the Publisher to a Subscriber, which triggers the flow of data in the whole chain. This is achieved internally by a single request signal from the Subscriber that is propagated upstream, all the way back to the source Publisher.<br>通过订阅，您将发布者与订阅者绑定在一起，从而触发了整个链中的数据流。 这是通过来自订阅服务器的单个请求信号在内部实现的，该请求信号向上游传播，一直返回到源发布服务器。</p>
@@ -177,7 +177,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/Reactor-3%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck914li7d00004uuy6ha1f84a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/Reactor-3%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck914p5mp00016huy8i2we4ki" class="article-share-link">Share</a>
       
       
     </footer>
