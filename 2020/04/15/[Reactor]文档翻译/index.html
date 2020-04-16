@@ -7,17 +7,19 @@
   
   <title>Reactor 3文档翻译 | Young</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响应式">
+  <meta name="description" content="3.反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Reactor 3文档翻译">
 <meta property="og:url" content="http://yoursite.com/2020/04/15/[Reactor]%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/index.html">
 <meta property="og:site_name" content="Young">
-<meta property="og:description" content="反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响应式">
+<meta property="og:description" content="3.反应式编程简介Reactor是Reactive Programming范式的实现，可以总结如下: 反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Reactive_programming)作为响">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="file:///Users/young/Desktop/reactor-flux.jpg">
 <meta property="article:published_time" content="2020-04-15T08:47:07.000Z">
-<meta property="article:modified_time" content="2020-04-15T11:09:55.504Z">
+<meta property="article:modified_time" content="2020-04-16T10:05:03.991Z">
 <meta property="article:author" content="young">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="file:///Users/young/Desktop/reactor-flux.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Young" type="application/atom+xml">
   
@@ -88,7 +90,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="反应式编程简介"><a href="#反应式编程简介" class="headerlink" title="反应式编程简介"></a>反应式编程简介</h3><p>Reactor是Reactive Programming范式的实现，可以总结如下:</p>
+        <h3 id="3-反应式编程简介"><a href="#3-反应式编程简介" class="headerlink" title="3.反应式编程简介"></a>3.反应式编程简介</h3><p>Reactor是Reactive Programming范式的实现，可以总结如下:</p>
 <pre><code>反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https://en.wikipedia.org/wiki/Reactive_programming)</code></pre><p>作为响应式编程方向上的第一步，Microsoft在.NET生态系统中创建了响应式扩展（Rx）库。然后RxJava在JVM上实现了反应式编程。随着时间的流逝，通过Reactive Streams的努力出现了Java的规范，该规范定义了JVM上的响应库的一组接口和交互规则。它的接口已在Flow类下集成到Java 9中。</p>
 <p>反应式编程范例通常以面向对象的语言表示，作为Observer设计模式的扩展。 您还可以将主要的反应流模式与熟悉的Iterator设计模式进行比较，因为所有这些库中的Iterable-Iterator对都有双重性。一个主要的区别是，虽然Iterator是基于pull的，但是反应流却是基于push的。</p>
 <p>使用迭代器是命令式编程模式，即使访问值的方法仅由Iterable负责。 确实，开发人员可以选择何时访问序列中的next（）项。在反应式流中，上述对等效于Publisher-Subscriber。 但是是发布者在新可用值出现时通知订阅者，而此推送方面是做出反应的关键。同样，应用于推入值的操作以声明方式而不是命令方式表示：程序员表示计算的逻辑，而不是描述其确切的控制流程。</p>
@@ -173,11 +175,16 @@
 <p>A Cold sequence starts anew for each Subscriber, including at the source of data. For example, if the source wraps an HTTP call, a new HTTP request is made for each subscription.<br>对于每个订阅者，包括在数据源处，冷序列都会重新开始。例如，如果源包装了一个HTTP调用，则会为每个订阅发出一个新的HTTP请求。</p>
 <p>A Hot sequence does not start from scratch for each Subscriber. Rather, late subscribers receive signals emitted after they subscribed. Note, however, that some hot reactive streams can cache or replay the history of emissions totally or partially. From a general perspective, a hot sequence can even emit when no subscriber is listening (an exception to the “nothing happens before you subscribe” rule).<br>并非每个订阅者都可以从头开始热序列。 相反，后订阅的订阅者会在订阅后接收发射的信号。但是请注意，某些热反应流可以全部或部分缓存或重放排放历史。从一般的角度来看，即使没有订阅者在收听，热序列甚至会发出（“订阅之前什么也没有发生”规则的例外）。</p>
 <p>For more information on hot vs cold in the context of Reactor, see this reactor-specific section.</p>
+<h3 id="3-Reactor-Core-Features"><a href="#3-Reactor-Core-Features" class="headerlink" title="3.Reactor Core Features"></a>3.Reactor Core Features</h3><p>Reactor项目的核心是reactor-core，一个响应式依赖库，符合Reactor streams规范，并且针对java8<br>Reactor引入了可组合的反应类型，这些类型实现了Publisher，但也提供了丰富的operators:Flux和Mono。一个Flux对象代表一个0..的反应序列。一个Mono对象表示一个单值或空(0..1)结果。</p>
+<p>这种区别在类型中包含了一些语义信息，表明了异步处理的粗略基数。例如，一个HTTP请求仅产生一个响应，因此进行计数操作没有多大意义。 因此，将HTTP调用的结果表示为Mono <HttpResponse>比将其表示为Flux <HttpResponse>更有意义，因为它仅提供与零项或一个项的上下文相关的运算符。</p>
+<p>更改处理的最大基数的操作符也会切换到相关类型。例如，count操作符存在于Flux中，但是它返回一个Mono<Long>。</p>
+<p>The following image shows how a Flux transforms items:</p>
+<p><img src="file:///Users/young/Desktop/reactor-flux.jpg" alt="alt flux"></p>
 <h4 id="原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive"><a href="#原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive" class="headerlink" title="原文地址：https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive"></a>原文地址：<a href="https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive" target="_blank" rel="noopener">https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive</a></h4>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/[Reactor]%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck91gnyjk0002zzuybtqkbqpd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/[Reactor]%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck92lw4710002s6uyg6mj2xh5" class="article-share-link">Share</a>
       
       
     </footer>
