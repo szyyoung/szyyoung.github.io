@@ -64,6 +64,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Reactor-实践" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/" class="article-date">
+  <time datetime="2020-04-24T10:16:57.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/">[Reactor]实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###Flux和Mono创建并订阅</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;几种创建的工厂方法</span><br><span class="line"></span><br><span class="line">Flux&lt;String&gt; flux &#x3D; Flux.just(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);</span><br><span class="line">List&lt;String&gt; iterable &#x3D; Arrays.asList(&quot;foo&quot;, &quot;bar&quot;, &quot;foobar&quot;);</span><br><span class="line">Flux&lt;String&gt; seq2 &#x3D; Flux.fromIterable(iterable);</span><br><span class="line">Flux&lt;Integer&gt; numbersFromFiveToSeven &#x3D; Flux.range(5, 3);</span><br><span class="line">Mono&lt;String&gt; data &#x3D; Mono.just(&quot;foo&quot;);</span><br><span class="line">Mono&lt;Object&gt; monoEmpty &#x3D; Mono.empty();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;基于Java 8 lambdas的几种订阅方式</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;订阅和触发序列</span><br><span class="line">        subscribe();</span><br><span class="line">        &#x2F;&#x2F;对于没一个生产出来的值做一些事情</span><br><span class="line">        subscribe(Consumer&lt;? super T&gt; consumer); </span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;处理值但是也会对错误做出反应</span><br><span class="line">        subscribe(Consumer&lt;? super T&gt; consumer,</span><br><span class="line">          Consumer&lt;? super Throwable&gt; errorConsumer);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;处理值和异常并且需要在序列成功完成后做一些事情</span><br><span class="line">        subscribe(Consumer&lt;? super T&gt; consumer,</span><br><span class="line">          Consumer&lt;? super Throwable&gt; errorConsumer,</span><br><span class="line">          Runnable completeConsumer);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;处理值、错误、成功完成，同时也可以由订阅调用而产生的Subscription来做些事情</span><br><span class="line">        subscribe(Consumer&lt;? super T&gt; consumer,</span><br><span class="line">          Consumer&lt;? super Throwable&gt; errorConsumer,</span><br><span class="line">          Runnable completeConsumer,</span><br><span class="line">          Consumer&lt;? super Subscription&gt; subscriptionConsumer);</span><br></pre></td></tr></table></figure>
+
+<p>这些变体返回对订阅的引用，您可以在不需要更多数据时使用该引用来取消订阅。 取消后，源应停止产生值并清除其创建的任何资源。这种取消和清理行为在Reactor中由通用的Disposable接口表示。</p>
+<p>#####简单示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;创建一个Flux，当订阅产生的时候，Flux将产生3个值</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 3); </span><br><span class="line">&#x2F;&#x2F;上述5个订阅方法中最简单的方法</span><br><span class="line">ints.subscribe();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;订阅后输出元素</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 3);</span><br><span class="line">&#x2F;&#x2F;提供一个订阅者</span><br><span class="line">ints.subscribe(i -&gt; System.out.println(i)); </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;产生元素过程中出现异常，可以增加一个异常的处理handler</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 4) </span><br><span class="line">      .map(i -&gt; &#123; </span><br><span class="line">        if (i &lt;&#x3D; 3) return i; </span><br><span class="line">        throw new RuntimeException(&quot;Got to 4&quot;); </span><br><span class="line">      &#125;);</span><br><span class="line">ints.subscribe(i -&gt; System.out.println(i), </span><br><span class="line">      error -&gt; System.err.println(&quot;Error: &quot; + error));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;增加一个handler来处理完成事件</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 4); </span><br><span class="line">ints.subscribe(i -&gt; System.out.println(i),</span><br><span class="line">    error -&gt; System.err.println(&quot;Error &quot; + error),</span><br><span class="line">    () -&gt; System.out.println(&quot;Done&quot;));</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;增加一个Subscription，可以调用其request(long)或者cancel() ，否则Flux会被挂起</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 4);</span><br><span class="line">ints.subscribe(i -&gt; System.out.println(i),</span><br><span class="line">    error -&gt; System.err.println(&quot;Error &quot; + error),</span><br><span class="line">    () -&gt; System.out.println(&quot;Done&quot;),</span><br><span class="line">    sub -&gt; sub.request(10));</span><br></pre></td></tr></table></figure>
+
+
+<p>###用disposable取消subscribe()</p>
+<p>所有这些基于lambda的subscribe()变体都具有Disposable返回类型。在这种情况下，Disposable接口表示可以通过调用其dispose()方法来取消订阅。<br>对应Flux和Mono，取消是一个源必须停止产生元素的信号，然而，不能保证及时性的，某些源产生元素的速度特别的快，甚至可以在接收到取消指令之前完成。</p>
+<p>###BaseSubscriber lambda的替代方案<br>提供了一个可以扩展的类BaseSubscriber，一种通用的订阅方法，用一种成熟的订阅者而不是lambda表达式的组合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;实现CoreSubscriber，Subscription，Disposable，两种角色</span><br><span class="line">public abstract class BaseSubscriber&lt;T&gt; implements CoreSubscriber&lt;T&gt;, Subscription,Disposable &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>######BaseSubscriber使用注意点<br>BaseSubscriber或者子类的实例只能使用一次，这意味着如果BaseSubscriber订阅了第二个Publisher,应该取消对第一个Publisher的订阅，因为违反了响应式流的规范，不能并行的调用Subscriber的onNext方法。</p>
+<p>######BaseSubscriber示例<br>SampleSubscriber 扩展了BaseSubscriber，Reactor中推荐通过这种方式定义订阅者，BaseSubscriber提供了钩子可以被重写来改变订阅者的行为。默认情况下，会触发一个无限制的请求request(Long.MAX_VALUE) 当你需要自定义请求量的时候，扩展BaseSubscriber会更加有用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SampleSubscriber&lt;Integer&gt; ss &#x3D; new SampleSubscriber&lt;Integer&gt;();</span><br><span class="line">Flux&lt;Integer&gt; ints &#x3D; Flux.range(1, 4);</span><br><span class="line">ints.subscribe(i -&gt; System.out.println(i),</span><br><span class="line">    error -&gt; System.err.println(&quot;Error &quot; + error),</span><br><span class="line">    () -&gt; &#123;System.out.println(&quot;Done&quot;);&#125;,</span><br><span class="line">    s -&gt; s.request(10));</span><br><span class="line">ints.subscribe(ss);</span><br><span class="line"></span><br><span class="line">static class SampleSubscriber&lt;T&gt; extends BaseSubscriber&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void hookOnSubscribe(Subscription subscription) &#123;</span><br><span class="line">        System.out.println(&quot;onSubscribe call: &quot;);</span><br><span class="line">        &#x2F;&#x2F;request(Long.MAX_VALUE)此出会调用无限制的请求</span><br><span class="line">        super.hookOnSubscribe(subscription);</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    protected void hookOnNext(T value) &#123;</span><br><span class="line">        System.out.println(&quot;onNext call: &quot; + value);</span><br><span class="line">        super.hookOnNext(value);</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    protected void hookOnError(Throwable throwable) &#123;</span><br><span class="line">        System.err.println(&quot;onError call: &quot; + throwable.getMessage());</span><br><span class="line">        super.hookOnError(throwable);</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    protected void hookOnCancel() &#123;</span><br><span class="line">        System.out.println(&quot;OnCancel call: &quot;);</span><br><span class="line">        super.hookOnCancel();</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    protected void hookOnComplete() &#123;</span><br><span class="line">        System.out.println(&quot;OnComplete call: &quot;);</span><br><span class="line">        super.hookOnComplete();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>######output</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">Done</span><br><span class="line">-----------------</span><br><span class="line">onSubscribe call: </span><br><span class="line">onNext call: 1</span><br><span class="line">onNext call: 2</span><br><span class="line">onNext call: 3</span><br><span class="line">onNext call: 4</span><br><span class="line">OnComplete call:</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="关于背压"><a href="#关于背压" class="headerlink" title="关于背压"></a>关于背压</h3><p>在Reactor中实现背压，通过给上游的 operator 发送一个请求，将消费者的压力回溯到源。<br>当前的“需求”或“待处理的请求”。 需求的上限为Long.MAX_VALUE，代表一个无限制的请求（意思是“尽可能快地生成”-基本禁用背压）。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/" data-id="ck9e23cw00002hmuycs28b8ly" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reactor/" rel="tag">Reactor</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-[JVM]GC" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/04/16/%5BJVM%5DGC/" class="article-date">
@@ -112,11 +172,12 @@ jinfo pid  查看基础信息
 jstack -gc pid 1000 1s刷新一次堆内存占用的情况，经过前后的对比，定位问题
 jstack pid | more  打印出进程中所有的线程，用于发现有没有死锁
     1.waiting on condition [ox00000000] 多的话可能有问题
-    2.线程的名称设置（参考阿里规范），自定义线程工程，定义有意义的线程名称，方便排查</code></pre><h5 id="使用阿里的-arthas-排查"><a href="#使用阿里的-arthas-排查" class="headerlink" title="使用阿里的 arthas 排查"></a>使用阿里的 arthas 排查</h5><h5 id="cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高"><a href="#cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高" class="headerlink" title="cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高"></a>cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高</h5><h5 id="oom问题排查-jmap"><a href="#oom问题排查-jmap" class="headerlink" title="oom问题排查  jmap"></a>oom问题排查  jmap</h5>
+    2.线程的名称设置（参考阿里规范），自定义线程工程，定义有意义的线程名称，方便排查</code></pre><h5 id="使用阿里的-arthas-排查"><a href="#使用阿里的-arthas-排查" class="headerlink" title="使用阿里的 arthas 排查"></a>使用阿里的 arthas 排查</h5><h5 id="cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高"><a href="#cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高" class="headerlink" title="cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高"></a>cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高</h5><h5 id="oom问题排查-jmap"><a href="#oom问题排查-jmap" class="headerlink" title="oom问题排查  jmap"></a>oom问题排查  jmap</h5><p>jmap -histo pid | head -20 列出前20行类占用内存情况<br>dump jmap两个命令 是否可以在生产环境中使用？一般是先下负载使用<br>只要使用jmap就是产生stp，可以先下负载，不影响服务的可用性，dump内存分析</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/16/[JVM]GC/" data-id="ck92wdcl60002gxfydaeia6j0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/16/[JVM]GC/" data-id="ck9e23cvx0001hmuya04m2n1o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
@@ -184,7 +245,7 @@ public void cancel();</code></pre><p>测试demo</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/[Reactor]Flux-demo/" data-id="ck92wdcl40001gxfyfd6z9fg4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/[Reactor]Flux-demo/" data-id="ck9e23cw30004hmuyczqjdtq0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reactor/" rel="tag">Reactor</a></li></ul>
@@ -303,7 +364,7 @@ public void cancel();</code></pre><p>测试demo</p>
 <p>A Cold sequence starts anew for each Subscriber, including at the source of data. For example, if the source wraps an HTTP call, a new HTTP request is made for each subscription.<br>对于每个订阅者，包括在数据源处，冷序列都会重新开始。例如，如果源包装了一个HTTP调用，则会为每个订阅发出一个新的HTTP请求。</p>
 <p>A Hot sequence does not start from scratch for each Subscriber. Rather, late subscribers receive signals emitted after they subscribed. Note, however, that some hot reactive streams can cache or replay the history of emissions totally or partially. From a general perspective, a hot sequence can even emit when no subscriber is listening (an exception to the “nothing happens before you subscribe” rule).<br>并非每个订阅者都可以从头开始热序列。 相反，后订阅的订阅者会在订阅后接收发射的信号。但是请注意，某些热反应流可以全部或部分缓存或重放排放历史。从一般的角度来看，即使没有订阅者在收听，热序列甚至会发出（“订阅之前什么也没有发生”规则的例外）。</p>
 <p>For more information on hot vs cold in the context of Reactor, see this reactor-specific section.</p>
-<h3 id="3-Reactor-Core-Features"><a href="#3-Reactor-Core-Features" class="headerlink" title="3.Reactor Core Features"></a>3.Reactor Core Features</h3><p>Reactor项目的核心是reactor-core，一个响应式依赖库，符合Reactor streams规范，并且针对java8<br>Reactor引入了可组合的反应类型，这些类型实现了Publisher，但也提供了丰富的operators:Flux和Mono。一个Flux对象代表一个0..的反应序列。一个Mono对象表示一个单值或空(0..1)结果。</p>
+<h3 id="4-Reactor-Core-Features"><a href="#4-Reactor-Core-Features" class="headerlink" title="4.Reactor Core Features"></a>4.Reactor Core Features</h3><p>Reactor项目的核心是reactor-core，一个响应式依赖库，符合Reactor streams规范，并且针对java8<br>Reactor引入了可组合的反应类型，这些类型实现了Publisher，但也提供了丰富的operators:Flux和Mono。一个Flux对象代表一个0..的反应序列。一个Mono对象表示一个单值或空(0..1)结果。</p>
 <p>这种区别在类型中包含了一些语义信息，表明了异步处理的粗略基数。例如，一个HTTP请求仅产生一个响应，因此进行计数操作没有多大意义。 因此，将HTTP调用的结果表示为Mono <HttpResponse>比将其表示为Flux <HttpResponse>更有意义，因为它仅提供与零项或一个项的上下文相关的运算符。</p>
 <p>更改处理的最大基数的操作符也会切换到相关类型。例如，count操作符存在于Flux中，但是它返回一个Mono<Long>。</p>
 <h5 id="Flux-an-Asynchronous-Sequence-of-0-N-Items"><a href="#Flux-an-Asynchronous-Sequence-of-0-N-Items" class="headerlink" title="Flux, an Asynchronous Sequence of 0-N Items"></a>Flux, an Asynchronous Sequence of 0-N Items</h5><p>The following image shows how a Flux transforms items:<br><img src="https://raw.githubusercontent.com/reactor/reactor-core/v3.0.7.RELEASE/src/docs/marble/flux.png" alt="alt flux"></p>
@@ -315,7 +376,7 @@ public void cancel();</code></pre><p>测试demo</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/[Reactor]%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck92wdcl90004gxfycc9q93r7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/[Reactor]%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" data-id="ck9e23cw60005hmuy6k93h0ql" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reactor/" rel="tag">Reactor</a></li></ul>
@@ -366,7 +427,7 @@ public void cancel();</code></pre><p>测试demo</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/15/Hexo%E5%8D%9A%E5%AE%A2%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-id="ck92wdckt0000gxfyf8ix2lf5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/15/Hexo%E5%8D%9A%E5%AE%A2%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-id="ck9e23cvp0000hmuyg8tl68ji" class="article-share-link">Share</a>
       
       
     </footer>
@@ -419,6 +480,10 @@ public void cancel();</code></pre><p>测试demo</p>
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/">[Reactor]实践</a>
+          </li>
         
           <li>
             <a href="/2020/04/16/%5BJVM%5DGC/">[JVM] GC.md</a>

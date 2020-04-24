@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://chuantu.xyz/t6/728/1587046744x3752237043.png">
 <meta property="og:image" content="http://chuantu.xyz/t6/728/1587046634x3752237043.png">
 <meta property="article:published_time" content="2020-04-16T14:21:39.000Z">
-<meta property="article:modified_time" content="2020-04-16T15:06:38.080Z">
+<meta property="article:modified_time" content="2020-04-17T12:56:59.701Z">
 <meta property="article:author" content="young">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -129,11 +129,12 @@ jinfo pid  查看基础信息
 jstack -gc pid 1000 1s刷新一次堆内存占用的情况，经过前后的对比，定位问题
 jstack pid | more  打印出进程中所有的线程，用于发现有没有死锁
     1.waiting on condition [ox00000000] 多的话可能有问题
-    2.线程的名称设置（参考阿里规范），自定义线程工程，定义有意义的线程名称，方便排查</code></pre><h5 id="使用阿里的-arthas-排查"><a href="#使用阿里的-arthas-排查" class="headerlink" title="使用阿里的 arthas 排查"></a>使用阿里的 arthas 排查</h5><h5 id="cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高"><a href="#cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高" class="headerlink" title="cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高"></a>cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高</h5><h5 id="oom问题排查-jmap"><a href="#oom问题排查-jmap" class="headerlink" title="oom问题排查  jmap"></a>oom问题排查  jmap</h5>
+    2.线程的名称设置（参考阿里规范），自定义线程工程，定义有意义的线程名称，方便排查</code></pre><h5 id="使用阿里的-arthas-排查"><a href="#使用阿里的-arthas-排查" class="headerlink" title="使用阿里的 arthas 排查"></a>使用阿里的 arthas 排查</h5><h5 id="cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高"><a href="#cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高" class="headerlink" title="cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高"></a>cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高</h5><h5 id="oom问题排查-jmap"><a href="#oom问题排查-jmap" class="headerlink" title="oom问题排查  jmap"></a>oom问题排查  jmap</h5><p>jmap -histo pid | head -20 列出前20行类占用内存情况<br>dump jmap两个命令 是否可以在生产环境中使用？一般是先下负载使用<br>只要使用jmap就是产生stp，可以先下负载，不影响服务的可用性，dump内存分析</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/16/[JVM]GC/" data-id="ck92wdcl60002gxfydaeia6j0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/04/16/[JVM]GC/" data-id="ck9e23cvx0001hmuya04m2n1o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
@@ -143,6 +144,15 @@ jstack pid | more  打印出进程中所有的线程，用于发现有没有死�
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Reactor]实践
+        
+      </div>
+    </a>
   
   
     <a href="/2020/04/15/%5BReactor%5DFlux-demo/" id="article-nav-older" class="article-nav-link-wrap">
@@ -196,6 +206,10 @@ jstack pid | more  打印出进程中所有的线程，用于发现有没有死�
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/">[Reactor]实践</a>
+          </li>
         
           <li>
             <a href="/2020/04/16/%5BJVM%5DGC/">[JVM] GC.md</a>
