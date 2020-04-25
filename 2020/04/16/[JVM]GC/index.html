@@ -3,8 +3,8 @@
 <![endif]-->
 <link rel="stylesheet" href="/css/iconfont.css">
 
-<link rel="stylesheet" href="/css/index.css?v=202004251551.css">
-<link rel="stylesheet" href="/css/info.css?v=202004251551.css">
+<link rel="stylesheet" href="/css/index.css?v=202004251552.css">
+<link rel="stylesheet" href="/css/info.css?v=202004251552.css">
 <link href="https://cdn.bootcss.com/highlight.js/9.15.9/styles/github.min.css" rel="stylesheet"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Young" type="application/atom+xml">
 </head><body><header id="header" class="header-navigation"><nav><div class="logo"><a href="http://yoursite.com">Young</a></div><h2 id="mnavh"><span class="navicon"></span></h2><ul id="starlist"><li><a href="/">首页</a></li><li><a href="/time.html">时间轴</a></li></ul><div class="searchbox"><div id="search_bar" class="search_bar"><input id="keyboard" placeholder="想搜点什么呢.." type="text" name="keyboard" autocomplete="off" class="input"><p class="search_ico"><span></span></p></div></div></nav></header><article><main><div class="con_warp"><div class="infosbox"><div class="newsview"><h3 class="news_title">[JVM] GC.md</h3><div class="bloginfo"><ul><li class="author">作者：<a href="/">young</a></li><li class="lmname"><a href="/">JVM</a></li><li class="timer">时间：2020-04-16 22:21:39</li><li class="view"><span id="busuanzi_value_page_pv">99</span><span>次访问</span></li></ul></div><div class="tags"><a href="/tags/GC/" target="_blank">GC</a></div><div class="news_con"><h3 id="garbage-什么是垃圾"><a href="#garbage-什么是垃圾" class="headerlink" title="garbage? 什么是垃圾"></a>garbage? 什么是垃圾</h3><h3 id="how-to-find-a-garbage-怎么找垃圾"><a href="#how-to-find-a-garbage-怎么找垃圾" class="headerlink" title="how to find a garbage? 怎么找垃圾"></a>how to find a garbage? 怎么找垃圾</h3><pre><code>1.reference count ，存在循环引用问题
 2.root searching   根可达算法</code></pre><h3 id="Gc算法-垃圾收集算法"><a href="#Gc算法-垃圾收集算法" class="headerlink" title="Gc算法 垃圾收集算法"></a>Gc算法 垃圾收集算法</h3><pre><code>1.mark-sweep 产生内存碎片
@@ -33,22 +33,7 @@ jstack -gc pid 1000 1s刷新一次堆内存占用的情况，经过前后的对�
 jstack pid | more  打印出进程中所有的线程，用于发现有没有死锁
     1.waiting on condition [ox00000000] 多的话可能有问题
     2.线程的名称设置（参考阿里规范），自定义线程工程，定义有意义的线程名称，方便排查</code></pre><h5 id="使用阿里的-arthas-排查"><a href="#使用阿里的-arthas-排查" class="headerlink" title="使用阿里的 arthas 排查"></a>使用阿里的 arthas 排查</h5><h5 id="cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高"><a href="#cpu飙高排查-jstack-查看具体是业务线程还是gc的线程导致的飙高" class="headerlink" title="cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高"></a>cpu飙高排查  jstack 查看具体是业务线程还是gc的线程导致的飙高</h5><h5 id="oom问题排查-jmap"><a href="#oom问题排查-jmap" class="headerlink" title="oom问题排查  jmap"></a>oom问题排查  jmap</h5><p>jmap -histo pid | head -20 列出前20行类占用内存情况<br>dump jmap两个命令 是否可以在生产环境中使用？一般是先下负载使用<br>只要使用jmap就是产生stp，可以先下负载，不影响服务的可用性，dump内存分析</p>
-</div></div><div class="nextinfo"><p>上一篇：<a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/">[Reactor] 实践</a></p><p>下一篇：<a href="/2020/04/15/%5BReactor%5DFlux-demo/">[Reactor] 反应式Flux demo</a></p></div><div class="news_pl"><div id="comment_container"></div>
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script src="/js/md5.min.js"></script>
-<script>const gitalk = new Gitalk({
-    clientID: 'you github Client ID',
-    clientSecret: 'you github Client Secret',
-    repo: 'you github repository',
-    owner: 'you github repository owner',
-    admin: ['you github repository owner'],
-    id: md5("2020/04/16/[JVM]GC/"),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: true  // Facebook-like distraction free mode
-})
-gitalk.render('comment_container')</script></div></div></div></main><aside class="r_box"><div class="card box"><h2>我的名片</h2><div class="box_con"><p>网名：young </p>
+</div></div><div class="nextinfo"><p>上一篇：<a href="/2020/04/24/Reactor-%E5%AE%9E%E8%B7%B5/">[Reactor] 实践</a></p><p>下一篇：<a href="/2020/04/15/%5BReactor%5DFlux-demo/">[Reactor] 反应式Flux demo</a></p></div><div class="news_pl"><div id="comment_container"></div></div></div></div></main><aside class="r_box"><div class="card box"><h2>我的名片</h2><div class="box_con"><p>网名：young </p>
 <p>职业：软件工程师</p>
 <p>Email：sun_zhongy@163.com</p>
 </div></div><div class="category box"><h2>文章分类</h2><div class="box_con"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactor/">Reactor</a><span class="category-list-count">3</span></li></ul></div></div></aside></article><footer><section class="footer_bottom"><div class="footer_container"><p class="copyright">Design by
@@ -59,6 +44,6 @@ gitalk.render('comment_container')</script></div></div></div></main><aside class
 <script src="/js/scrollreveal.js"></script>
 <script src="/js/hc-sticky.js"></script>
 <script src="/js/canvas-nest.js" type="text/javascript" color="47,135,193" opacity="0.7" zIndex="-2" count="199"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/highlight.min.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/languages/java.min.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/languages/javascript.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<script src="/js/common.js?v=202004251551.js"></script>
-<script src="/js/index.js?v=202004251551.js"></script>
+<script src="/js/common.js?v=202004251552.js"></script>
+<script src="/js/index.js?v=202004251552.js"></script>
 </body></html>

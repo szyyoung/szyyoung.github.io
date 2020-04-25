@@ -3,8 +3,8 @@
 <![endif]-->
 <link rel="stylesheet" href="/css/iconfont.css">
 
-<link rel="stylesheet" href="/css/index.css?v=202004251551.css">
-<link rel="stylesheet" href="/css/info.css?v=202004251551.css">
+<link rel="stylesheet" href="/css/index.css?v=202004251552.css">
+<link rel="stylesheet" href="/css/info.css?v=202004251552.css">
 <link href="https://cdn.bootcss.com/highlight.js/9.15.9/styles/github.min.css" rel="stylesheet"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Young" type="application/atom+xml">
 </head><body><header id="header" class="header-navigation"><nav><div class="logo"><a href="http://yoursite.com">Young</a></div><h2 id="mnavh"><span class="navicon"></span></h2><ul id="starlist"><li><a href="/">首页</a></li><li><a href="/time.html">时间轴</a></li></ul><div class="searchbox"><div id="search_bar" class="search_bar"><input id="keyboard" placeholder="想搜点什么呢.." type="text" name="keyboard" autocomplete="off" class="input"><p class="search_ico"><span></span></p></div></div></nav></header><article><main><div class="con_warp"><div class="infosbox"><div class="newsview"><h3 class="news_title">[Reactor] 3文档翻译</h3><div class="bloginfo"><ul><li class="author">作者：<a href="/">young</a></li><li class="lmname"><a href="/">Reactor</a></li><li class="timer">时间：2020-04-15 16:47:07</li><li class="view"><span id="busuanzi_value_page_pv">99</span><span>次访问</span></li></ul></div><div class="tags"><a href="/tags/Reactor%E6%96%87%E6%A1%A3/" target="_blank">Reactor文档</a></div><div class="news_con"><h3 id="3-反应式编程简介"><a href="#3-反应式编程简介" class="headerlink" title="3.反应式编程简介"></a>3.反应式编程简介</h3><p>Reactor是Reactive Programming范式的实现，可以总结如下:</p>
 <pre><code>反应式编程是一种异步编程范式，它涉及数据流和变化的传播。这意味着可以通过采用的编程语言轻松地表达静态（例如数组）或动态（例如事件发射器）数据流。More info: [wikipedia](https://en.wikipedia.org/wiki/Reactive_programming)</code></pre><p>作为响应式编程方向上的第一步，Microsoft在.NET生态系统中创建了响应式扩展（Rx）库。然后RxJava在JVM上实现了反应式编程。随着时间的流逝，通过Reactive Streams的努力出现了Java的规范，该规范定义了JVM上的响应库的一组接口和交互规则。它的接口已在Flow类下集成到Java 9中。</p>
@@ -99,22 +99,7 @@
 <p>在可能的信号范围如此之大的情况下，Flux是通用的响应的类型。 请注意，所有事件，甚至是终止事件，都是可选的：没有onNext事件，但onComplete事件表示一个空的有限序列，但是删除onComplete则有一个无限的空序列（除了取消测试外，它没有什么用处）。同样，无限序列不一定为空。例如，Flux.interval（Duration）产生Flux <Long>，它是无限的并从时钟发出规则的滴答声。</p>
 <h5 id="Mono-an-Asynchronous-0-1-Result"><a href="#Mono-an-Asynchronous-0-1-Result" class="headerlink" title="Mono, an Asynchronous 0-1 Result"></a>Mono, an Asynchronous 0-1 Result</h5><p>The following image shows how a Flux transforms items:<br><img src="https://raw.githubusercontent.com/reactor/reactor-core/v3.0.7.RELEASE/src/docs/marble/flux.png" alt="alt flux"></p>
 <p>Mono<T>是特别的Publisher<T>，它最多发出一项，然后（可选）以onComplete信号或onError信号终止。</p>
-<h4 id="原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive"><a href="#原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive" class="headerlink" title="原文地址：https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive"></a>原文地址：<a href="https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive" target="_blank" rel="noopener">https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive</a></h4></div></div><div class="nextinfo"><p>上一篇：<a href="/2020/04/15/%5BReactor%5DFlux-demo/">[Reactor] 反应式Flux demo</a></p><p>下一篇：<a href="/2020/04/15/Hexo%E5%8D%9A%E5%AE%A2%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Hex博客快速上手</a></p></div><div class="news_pl"><div id="comment_container"></div>
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script src="/js/md5.min.js"></script>
-<script>const gitalk = new Gitalk({
-    clientID: 'you github Client ID',
-    clientSecret: 'you github Client Secret',
-    repo: 'you github repository',
-    owner: 'you github repository owner',
-    admin: ['you github repository owner'],
-    id: md5("2020/04/15/[Reactor]文档翻译/"),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: true  // Facebook-like distraction free mode
-})
-gitalk.render('comment_container')</script></div></div></div></main><aside class="r_box"><div class="card box"><h2>我的名片</h2><div class="box_con"><p>网名：young </p>
+<h4 id="原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive"><a href="#原文地址：https-projectreactor-io-docs-core-release-reference-index-html-intro-reactive" class="headerlink" title="原文地址：https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive"></a>原文地址：<a href="https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive" target="_blank" rel="noopener">https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive</a></h4></div></div><div class="nextinfo"><p>上一篇：<a href="/2020/04/15/%5BReactor%5DFlux-demo/">[Reactor] 反应式Flux demo</a></p><p>下一篇：<a href="/2020/04/15/Hexo%E5%8D%9A%E5%AE%A2%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Hex博客快速上手</a></p></div><div class="news_pl"><div id="comment_container"></div></div></div></div></main><aside class="r_box"><div class="card box"><h2>我的名片</h2><div class="box_con"><p>网名：young </p>
 <p>职业：软件工程师</p>
 <p>Email：sun_zhongy@163.com</p>
 </div></div><div class="category box"><h2>文章分类</h2><div class="box_con"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactor/">Reactor</a><span class="category-list-count">3</span></li></ul></div></div></aside></article><footer><section class="footer_bottom"><div class="footer_container"><p class="copyright">Design by
@@ -125,6 +110,6 @@ gitalk.render('comment_container')</script></div></div></div></main><aside class
 <script src="/js/scrollreveal.js"></script>
 <script src="/js/hc-sticky.js"></script>
 <script src="/js/canvas-nest.js" type="text/javascript" color="47,135,193" opacity="0.7" zIndex="-2" count="199"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/highlight.min.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/languages/java.min.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.15.9/languages/javascript.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<script src="/js/common.js?v=202004251551.js"></script>
-<script src="/js/index.js?v=202004251551.js"></script>
+<script src="/js/common.js?v=202004251552.js"></script>
+<script src="/js/index.js?v=202004251552.js"></script>
 </body></html>
